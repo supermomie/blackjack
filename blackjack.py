@@ -42,33 +42,37 @@ def sum_values(t = 1, a_c = [], a_j = []):
         numeroJ = 10
     allElemC = a_c
     allElemJ = a_j
-    allElemC.append(numeroC)
+    allElemC.append(numeroC) if sum(allElemC) < 16 else numeroC
     allElemJ.append(numeroJ)
     _sumC = sum(allElemC)
     _sumJ = sum(allElemJ)
     print(_player[0][0], allElemC,"=", _sumC)
     print(_player[1][0], allElemJ,"=", _sumJ)
     print("\n\n"+colored('CONTINUE ??', 'green')+"\n\n")
-    #state = "WIN" if  else "GAME OVER"
+    stateGame = False if _sumJ > 21 or _sumC > 21 else True
+    stateUser = _player[0][0] if _player[0][0] == True  else _player[1][0]
     if _sumJ == 21:
-        print(colored(_player[0][0].upper()+"a win la game", 'green'))
+        print(colored("BLACKJACK POUR "+_player[1][0].upper()+" A WIN LA GAME", 'green'))
         exit()
     if _sumC == 21:
-        print(colored(_player[1][0].upper()+"a win la game", 'green'))
+        print(colored("BLACKJACK POUR "+_player[0][0].upper()+" A WIN LA GAME", 'green'))
         exit()
-    if _sumC >= 21:
+    if _sumC > 21:
         print(colored("GAME OVER POUR "+ _player[0][0].upper(), 'red'))
         exit()
-    if _sumJ >= 21:
+    if _sumJ > 21:
         print(colored("GAME OVER POUR "+ _player[1][0].upper(), 'red'))
         exit()
     incommand = input()
-    if incommand == "o" or incommand == "oui":
+    if incommand == "o" or incommand == "oui" or incommand == "y" or incommand == "yes":
         t += 1
         sum_values(t, a_c, a_j)
 
 def rules():
     sum_values(t, a_c, a_j)
-    
+
+
+
+
 if __name__ == "__main__":
     command()
