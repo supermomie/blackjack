@@ -1,5 +1,6 @@
 import random
 from random import randint
+from termcolor import colored
 
 
 CARDNUM = 52
@@ -10,8 +11,10 @@ def command():
     incommand = input()
     if incommand == "oui" or incommand == "o" or incommand == "yes" or incommand == "y":
         start_game()
-    else :
-        print("QUIT")
+    if incommand == "":
+        print(colored('QUIT', 'red'))
+    else: 
+        print(colored('QUIT', 'red'))
 
 
 
@@ -25,16 +28,47 @@ def get_card(cardnum):
     getOneCard = {"Croupier" : [random.randint((cardnum - cardnum) + 1, cardnum//numberFamilly), random.choice(famillyName)],
                     "Joueur" : [random.randint((cardnum - cardnum) + 1, cardnum//numberFamilly), random.choice(famillyName)]
                 }
-
     return getOneCard
 
 
-def sum_values():
+def sum_values(t = 1, a_c = [], a_j = []):
     card = get_card(CARDNUM)
-    print(card)
-    values = card.values()
-    
-    _sum = []
+    _elem = [elem for elem in list(card.values())]
+    _player = [player for player in list(card.items())]
+    numeroC = _elem[0][0]
+    numeroJ = _elem[1][0]
+    if numeroC == 11 or numeroC == 12 or numeroC == 13 or numeroJ == 11 or numeroJ == 12 or numeroJ == 13:
+        numeroC = 10
+        numeroJ = 10
+    allElemC = a_c
+    allElemJ = a_j
+    allElemC.append(numeroC)
+    allElemJ.append(numeroJ)
+    _sumC = sum(allElemC)
+    _sumJ = sum(allElemJ)
+    print(_player[0][0], allElemC,"=", _sumC)
+    print(_player[1][0], allElemJ,"=", _sumJ)
+    print("\n\n"+colored('CONTINUE ??', 'green')+"\n\n")
+    #state = "WIN" if  else "GAME OVER"
+    if _sumJ == 21:
+        print(colored(_player[0][0].upper()+"a win la game", 'green'))
+        exit()
+    if _sumC == 21:
+        print(colored(_player[1][0].upper()+"a win la game", 'green'))
+        exit()
+    if _sumC >= 21:
+        print(colored("GAME OVER POUR "+ _player[0][0].upper(), 'red'))
+        exit()
+    if _sumJ >= 21:
+        print(colored("GAME OVER POUR "+ _player[1][0].upper(), 'red'))
+        exit()
+    incommand = input()
+    if incommand == "o" or incommand == "oui":
+        t += 1
+        sum_values(t, a_c, a_j)
 
+def rules():
+    sum_values(t, a_c, a_j)
+    
 if __name__ == "__main__":
     command()
