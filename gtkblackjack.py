@@ -62,6 +62,14 @@ def loop(playerX, playerY, playerXChange, playerYChange, speed):
         screen.fill(color)
         playerX += playerXChange
         playerY += playerYChange
+        if playerX <= 0:
+            playerX = 0
+        if playerX >= width-50:
+            playerX = width-50
+        if playerY <= 0:
+            playerY = 0
+        if playerY >= height-50:
+            playerY = height-50
         player(playerX, playerY)
         pygame.display.update()
 
