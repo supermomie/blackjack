@@ -1,4 +1,5 @@
 import random
+import socketio
 from termcolor import colored
 
 
@@ -12,7 +13,7 @@ def command():
     quitGame = print(colored('QUIT', 'red', attrs=['reverse','bold']))
     quitGame, exit() if incommand == "" else quitGame
 
-#TODO implement le multi
+#TODO implement multi SOCKETIO
 def implement_players():
     command()
 
