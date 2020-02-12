@@ -6,7 +6,7 @@ from termcolor import colored
 NUM_CARD = 52 #TODO RENAME THAT
 
 def command():
-    print(colored("tu veux jouer ?".upper(), 'green', attrs=['bold', 'blink']), colored("oui", 'green', attrs=['bold']), colored('non','red', attrs=['bold']))
+    print(colored("tu veux jouer ?\n".upper(), 'green', attrs=['bold']), colored("oui/o/yes/y", 'green', attrs=['bold']),"|", colored('non/enter','red', attrs=['bold']))
     incommand = input()
     if incommand == "oui" or incommand == "o" or incommand == "yes" or incommand == "y":
         game()
@@ -30,9 +30,9 @@ def game(t = 1, a_c = [], a_j = [], d_c = [], d_j = []):
     card = get_card(NUM_CARD)
     _elem = [elem for elem in list(card.values())]
     _player = [player for player in list(card.items())]
-    numeroC, numeroJ = _elem[0][0], _elem[1][0]
-    if numeroC == 11 or numeroC == 12 or numeroC == 13 or numeroJ == 11 or numeroJ == 12 or numeroJ == 13:
-        numeroC, numeroJ = 10, 10
+    numeroC, numeroJ, ten = _elem[0][0], _elem[1][0], 10
+    numeroC = ten if numeroC == 11 or numeroC == 12 or numeroC == 13 else numeroC
+    numeroJ = ten if numeroJ == 11 or numeroJ == 12 or numeroJ == 13 else numeroJ
     allElemC, allElemJ, detailElemC, detailElemJ = a_c, a_j, d_c, d_j
     detailElemC.append(_elem[0]) if sum(allElemC) < 16 else numeroC
     detailElemJ.append(_elem[1]) #if _input == "o" else numeroJ
