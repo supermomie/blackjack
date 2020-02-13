@@ -30,7 +30,7 @@ class blackjack:
 
     def command(self):
         print(colored("tu veux jouer ?\n".upper(), 'green', attrs=['bold']), colored("oui/o/yes/y", 'green', attrs=['bold']),"|", colored('non/enter','red', attrs=['bold']))
-        incommand = input()
+        incommand = input(">> ")
         if incommand == "oui" or incommand == "o" or incommand == "yes" or incommand == "y":
             self.game()
         quitGame = print(colored('QUIT', 'red', attrs=['reverse','bold']))
@@ -55,8 +55,8 @@ class blackjack:
         _elem = [elem for elem in list(card.values())]
         _player = [player for player in list(card.items())]
         ten = 10
-        numeroC = _elem[0][0] if starting == False else _elem[0][0][0]+_elem[0][1][0]
-        numeroJ = _elem[1][0] if starting == False else _elem[1][0][0]+_elem[1][1][0]
+        numeroC = _elem[0][0] if starting == False else _elem[0][0][0]+_elem[0][1][0] #if over 10
+        numeroJ = _elem[1][0] if starting == False else _elem[1][0][0]+_elem[1][1][0] #if over 10
         numeroC = ten if numeroC == 11 or numeroC == 12 or numeroC == 13 else numeroC
         numeroJ = ten if numeroJ == 11 or numeroJ == 12 or numeroJ == 13 else numeroJ
         allElemC, allElemJ, detailElemC, detailElemJ = a_c, a_j, d_c, d_j
@@ -70,7 +70,7 @@ class blackjack:
         print("\n\n"+colored('CONTINUE ??', 'yellow')+"\n\n")
         stateGame = "PUREBJ" if _sumJ == l else "PUREBC" if _sumC == l else "BLACKJACKJ" if _sumJ == l else "BLACKJACKC" if _sumC == l else "J" if _sumJ > l else "C" if _sumC > l else False
         print(stateGame)
-        print(t)
+        print("Tour numero",t)
         playerStatement = _player[1][0] if stateGame == "J" or stateGame == "BLACKJACKJ" else _player[0][0]
         absoluteWin = colored("LE "+ playerStatement.upper()+" A BLACKJACK", 'green' , attrs=['reverse', 'bold', 'blink'])
         winMessage = colored("LE "+ playerStatement.upper() +" A WIN LA GAME", 'green', attrs=['reverse', 'bold', 'blink'])
@@ -78,8 +78,8 @@ class blackjack:
         result = absoluteWin if stateGame == "PUREBJ" or stateGame == "PUREBC" else winMessage if stateGame == False or stateGame == "BLACKJACKJ" or stateGame == "BLACKJACKC" else gameOverMessage
         print(result) if stateGame else ""
         exit() if stateGame == "PUREBJ" or stateGame == "PUREBC" or stateGame == "J" or stateGame == "C" or stateGame == "BLACKJACKJ" or stateGame == "BLACKJACKC" else ""
-        incommand = input()
-        os.system('clear')
+        incommand = input(">> ")
+        #os.system('clear')
         if incommand == "o" or incommand == "oui" or incommand == "y" or incommand == "yes":
             t += 1
             self.game(t, l, a_c, a_j, d_c, d_j, starting = False)
