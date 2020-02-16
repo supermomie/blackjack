@@ -35,7 +35,7 @@ if __name__ == "__main__":
     #add server socket to the list of readable connections
     connected_list.append(server_socket)
     print(colored('\t\t\t\tSERVER STARTED', 'green', attrs=['bold', 'reverse']))
-    #TODO correct the infite loop when 1 user live the server
+    #TODO correct the infite loop when 1 user live the server Ctrl+C
     while 1:
     #get the list sockets which are ready to be read through select
         rList,wList,error_sockets = select.select(connected_list,[],[])
@@ -83,10 +83,10 @@ if __name__ == "__main__":
 
                     #get addr of client sending the message
                     i,p=sock.getpeername()
-                    print("data: ", data)
-                    print([i for i in data])
+                    #print("data: ", data)
+                    #print([i for i in data])
                     #print(type(data))
-                    print(len(data))
+                    #print(len(data))
                     if data == "exit\n":
                         #print(data)
                         print("exit ? :", data)
@@ -107,8 +107,14 @@ if __name__ == "__main__":
                         msg="\r\33[1m"+"\33[35m "+record[(i,p)].decode("Utf8")+": "+"\33[0m"+data+"\n"
                         #print("msg :",msg)
                         #print(record)
-                        send_to_all(sock,msg)
-
+                        send_to_all(sock, msg)
+                    else:
+                        msg="\r\33[1m"+"\33[31m "+record[(i,p)].decode("Utf8")+" a quitter la conversation \33[0m\n"
+                        send_to_all(sock, msg)
+                        del record[(i,p)]
+                        connected_list.remove(sock)
+                        sock.close()
+                        continue
                 #abrupt/force user exit
                 except:
                     #print("except")
