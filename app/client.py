@@ -2,7 +2,6 @@ import socket, select, sys
 from termcolor import colored
 
 PORT = 9991
-
 #helper function (formatting)
 def display() :
     you=colored("You", 'yellow', attrs=['bold'])+" : "
@@ -13,8 +12,6 @@ def display() :
 def main():
     hostname = socket.gethostname()
     host = socket.gethostbyname(hostname)
-    print(host)
-
     port = PORT
     
     #asks for user name
@@ -38,6 +35,7 @@ def main():
     print("name", name)
     s.send(name.encode("utf-8"))
     display()
+    #TODO correct the infite loop when 1 user live the server
     while 1:
         socket_list = [sys.stdin, s]
         

@@ -35,11 +35,11 @@ if __name__ == "__main__":
     #add server socket to the list of readable connections
     connected_list.append(server_socket)
     print(colored('\t\t\t\tSERVER STARTED', 'green', attrs=['bold', 'reverse']))
-
+    #TODO correct the infite loop when 1 user live the server
     while 1:
     #get the list sockets which are ready to be read through select
         rList,wList,error_sockets = select.select(connected_list,[],[])
-
+        
         for sock in rList:
             #new connection
             if sock == server_socket:
@@ -64,43 +64,49 @@ if __name__ == "__main__":
                     record[addr]=name
                     print("name :",name)
                     print("Client (%s, %s) connected" % addr," [",record[addr],"]")
-                    msg="\33[32m\r\33[1m Bienvenue. 'bye' pour quitter\n\33[0m"
+                    msg="\33[32m\r\33[1m Bienvenue. 'exit' pour quitter\n\33[0m"
                     sockfd.send(msg.encode("Utf8"))
-                    send_to_all(sockfd, "\33[32m\33[1m\r "+name.decode("Utf8")+" a rrejoint la conversation \n\33[0m")
+                    send_to_all(sockfd, "\33[32m\33[1m\r "+name.decode("Utf8")+" a rejoint la conversation \n\33[0m")
 
             #some incoming message from a client
             else:
-                print("else")
+                #print("else")
                 #data from client
                 try:
                     data1 = sock.recv(buffer)
-                    print("buffer :",data1)
+                    #print("buffer :",data1)
                     #print("sock is: ",sock)
                     #print(" :",data1[:].decode("Utf8"))
                     #data=data1[:data1.index("\n")]
                     data=data1[:].decode("Utf8")
-                    print("\ndata received: ",data)
+                    #print("\ndata received: ",data)
 
                     #get addr of client sending the message
                     i,p=sock.getpeername()
-                    if data == "bye":
+                    print("data: ", data)
+                    print([i for i in data])
+                    #print(type(data))
+                    print(len(data))
+                    if data == "exit\n":
                         #print(data)
-                        print("bye ? :", data)
-                        msg="\r\33[1m"+"\33[31m "+record[(i,p)].decode("Utf8")+" left the conversation \33[0m\n"
+                        print("exit ? :", data)
+                        msg="\r\33[1m"+"\33[31m "+record[(i,p)].decode("Utf8")+" a quitter la conversation \33[0m\n"
                         send_to_all(sock,msg.decode("Utf8"))
                         print("Client (%s, %s) is offline" % (i,p)," [",record[(i,p)],"]")
                         del record[(i,p)]
                         connected_list.remove(sock)
                         sock.close()
                         continue
-                    else:
+                    #if data == "" or len(data) == 1:
+                    #    print("data empty")
+                    elif len(data) > 1:
                         #print("record[(i,p)] :", record[(i,p)])
                         #print("record[(i,p)] :", record[(i,p)].decode("Utf8"))
                         #print("data :", data)
-                        msg="\r"+colored(record[(i,p)].decode("Utf8"), 'magenta', attrs=['bold']) + data +"\n"
-                        #msg="\r\33[1m"+"\33[35m "+record[(i,p)].decode("Utf8")+": "+"\33[0m"+data+"\n"
+                        #msg="\r\t"+colored(record[(i,p)].decode("Utf8"), 'magenta', attrs=['bold'])+ " : " + data +"\n"
+                        msg="\r\33[1m"+"\33[35m "+record[(i,p)].decode("Utf8")+": "+"\33[0m"+data+"\n"
                         #print("msg :",msg)
-                        print(record)
+                        #print(record)
                         send_to_all(sock,msg)
 
                 #abrupt/force user exit
